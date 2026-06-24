@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Pedido</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-indigo-600 tracking-tight hover:opacity-80 transition-opacity">
+                <i data-lucide="arrow-left" class="w-5 h-5 text-slate-600"></i>
+                <span>Voltar para a Loja</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-8 text-center sm:text-left">Finalizar seu Pedido</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+            
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:col-span-3 space-y-6">
+                <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                    <i data-lucide="user" class="w-5 h-5 text-indigo-600"></i> Seus Dados de Entrega
+                </h3>
+                
+                <form id="formCheckout" onsubmit="finalizarPedido(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Nome Completo</label>
+                        <input type="text" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 transition-colors" placeholder="João Silva">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">E-mail</label>
+                        <input type="email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 transition-colors" placeholder="joao@email.com">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">WhatsApp / Telefone</label>
+                            <input type="tel" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 transition-colors" placeholder="(11) 99999-9999">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">CEP</label>
+                            <input type="text" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 transition-colors" placeholder="00000-000">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-colors shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2 text-lg">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i> Concluir Pedido Automático
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 md:col-span-2 space-y-6 sticky top-24">
+                <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-600"></i> Resumo do Pedido
+                </h3>
+
+                <div id="cardProduto" class="hidden flex gap-4 items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <img id="prodImagem" src="" alt="" class="w-16 h-16 object-cover rounded-lg bg-white border">
+                    <div>
+                        <h4 id="prodNome" class="font-bold text-slate-900 text-sm"></h4>
+                        <p id="prodPreco" class="text-indigo-600 font-extrabold text-base mt-0.5"></p>
+                    </div>
+                </div>
+
+                <div id="cardVazio" class="text-center py-6 text-slate-400 text-sm">
+                    <i data-lucide="shopping-cart" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                    Nenhum produto selecionado.
+                </div>
+
+                <div class="space-y-2 text-sm pt-2">
+                    <div class="flex justify-between text-slate-500">
+                        <span>Subtotal</span>
+                        <span id="subtotalVal">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-500">
+                        <span>Frete</span>
+                        <span class="text-emerald-600 font-medium">Grátis</span>
+                    </div>
+                    <hr class="border-slate-100 my-2">
+                    <div class="flex justify-between text-base font-black text-slate-950">
+                        <span>Total</span>
+                        <span id="totalVal">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-6 text-center text-sm text-slate-400 mt-12">
+        &copy; 2026 AutoStore. Todos os direitos reservados.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Executa ao carregar a página de confirmação
+        document.addEventListener('DOMContentLoaded', () => {
+            // Resgata a string do localStorage e converte de volta para objeto
+            const dadosProduto = localStorage.getItem('produtoSelecionado');
+
+            if (dadosProduto) {
+                const produto = JSON.parse(dadosProduto);
+
+                // Preenche os campos da página dinamicamente
+                document.getElementById('prodNome').innerText = produto.nome;
+                document.getElementById('prodPreco').innerText = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
+                document.getElementById('prodImagem').src = produto.imagem;
+                document.getElementById('prodImagem').alt = produto.nome;
+
+                // Preenche o resumo de valores
+                document.getElementById('subtotalVal').innerText = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
+                document.getElementById('totalVal').innerText = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
+
+                // Altera a visibilidade dos blocos
+                document.getElementById('cardProduto').classList.remove('hidden');
+                document.getElementById('cardVazio').classList.add('hidden');
+            }
+        });
+
+        // Simulação do envio automático final
+        function finalizarPedido(event) {
+            event.preventDefault();
+            alert('🚀 Pedido Confirmado e enviado para o sistema automático com sucesso!');
+            
+            // Limpa o item comprado para a próxima compra
+            localStorage.removeItem('produtoSelecionado');
+            
+            // Redireciona de volta para a Home
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
