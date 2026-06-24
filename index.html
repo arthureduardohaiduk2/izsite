@@ -67,7 +67,6 @@
             </p>
         </div>
 
-        <!-- Grid atualizado para comportar 4 colunas em telas grandes -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             <!-- Produto 1 -->
             <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-5 flex flex-col relative overflow-hidden group hover:border-amber-500/30 hover:bg-slate-800 transition-all duration-300">
@@ -81,7 +80,7 @@
                         <span class="text-[10px] text-slate-500 block uppercase font-bold tracking-wider">Por apenas</span>
                         <span class="text-xl font-black text-white">R$ 4,00</span>
                     </div>
-                    <button onclick="selecionarProduto('60-63 Robux', 4.00)" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-amber-400/10 flex items-center gap-1.5 text-sm">
+                    <button onclick="selecionarProduto('63 Robux', 4.00)" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-amber-400/10 flex items-center gap-1.5 text-sm">
                         Comprar <i data-lucide="chevron-right" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -124,15 +123,14 @@
                 </div>
             </div>
 
-            <!-- NOVO Produto 4 (Quantidade Personalizada) -->
+            <!-- Produto 4 (Quantidade Personalizada) -->
             <div class="bg-slate-800/50 border border-dashed border-slate-700 rounded-3xl p-5 flex flex-col relative overflow-hidden group hover:border-amber-500/40 hover:bg-slate-800 transition-all duration-300">
                 <div class="bg-blue-500/10 text-blue-400 p-3 rounded-2xl w-fit mb-3">
                     <i data-lucide="sliders" class="w-6 h-6"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-1">Personalizado</h3>
-                <p class="text-slate-400 text-xs mb-3">R$ 0,21 por Robux. Mínimo de 60 unidades.</p>
+                <p id="custom-rate-text" class="text-slate-400 text-xs mb-3">Carregando preço...</p>
                 
-                <!-- Input interno do Card -->
                 <div class="mb-4">
                     <input type="number" id="custom-qty-input" min="60" value="60" oninput="atualizarPrecoCustomizado()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white text-sm font-bold" placeholder="Qtd (Mín 60)">
                 </div>
@@ -140,7 +138,7 @@
                 <div class="mt-auto pt-4 border-t border-slate-700/50 flex items-center justify-between">
                     <div>
                         <span class="text-[10px] text-slate-500 block uppercase font-bold tracking-wider">Total</span>
-                        <span id="custom-price-display" class="text-xl font-black text-white">R$ 12,60</span>
+                        <span id="custom-price-display" class="text-xl font-black text-white">R$ 0,00</span>
                     </div>
                     <button onclick="avancarCompraCustomizada()" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-amber-400/10 flex items-center gap-1.5 text-sm">
                         Comprar <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -164,18 +162,27 @@
                 </h2>
                 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Seu Nome</label>
-                    <input type="text" id="chk-nome" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: Lucas Silva">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Usuário Roblox</label>
+                    <input type="text" id="chk-roblox" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: GamerPro123">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Telefone para Contato</label>
-                    <input type="tel" id="chk-tel" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: (11) 99999-9999">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Seu E-mail</label>
+                    <input type="email" id="chk-email" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: seuemail@provedor.com">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">ID do Discord (Apenas números) <span class="text-amber-400">*</span></label>
-                    <input type="text" id="chk-discord" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: 384102941049210">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">ID do Discord (Apenas números) <span class="text-amber-400">*</span></label>
+                        <input type="text" id="chk-discord" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: 384102941049210">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Forma de Pagamento</label>
+                        <select id="chk-pagamento" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white font-medium">
+                            <option value="Cartao">Cartão de Crédito</option>
+                            <option value="Pix">Pix</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-slate-950 font-extrabold py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-lg mt-6">
@@ -183,7 +190,7 @@
                 </button>
             </form>
 
-            <!-- Resumo -->
+            <!-- Resumo Lateral -->
             <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:col-span-2 space-y-6">
                 <h3 class="text-lg font-bold text-white border-b border-slate-700 pb-3 flex items-center gap-2">
                     <i data-lucide="shopping-cart" class="text-amber-400 w-5 h-5"></i> Item Selecionado
@@ -216,36 +223,77 @@
         </div>
     </main>
 
-    <!-- TELA DE SUCESSO -->
-    <main id="view-success" class="view-panel hidden flex-grow max-w-xl mx-auto px-4 py-16 w-full text-center">
-        <div class="w-20 h-20 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20">
-            <i data-lucide="mail" class="w-10 h-10"></i>
+    <!-- TELA DE SUCESSO DO PEDIDO -->
+    <main id="view-success" class="view-panel hidden flex-grow max-w-xl mx-auto px-4 py-12 w-full text-center">
+        <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
+            <i data-lucide="badge-check" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-3xl font-black text-white mb-2">Pedido Registrado!</h2>
-        <p class="text-slate-400 max-w-md mx-auto mb-8">
-            O sistema simulou o envio automático do e-mail de confirmação do pedido:
+        <h2 class="text-3xl font-black text-white mb-1">Pedido Confirmado!</h2>
+        <p class="text-slate-400 text-sm max-w-md mx-auto mb-6">
+            Seu pedido foi registrado com sucesso. Realize o pagamento abaixo.
         </p>
 
-        <div class="space-y-4 text-left">
-            <!-- Mensagem exclusiva para o comprador -->
-            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
-                <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-3">
-                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> Para o Comprador (Você):
+        <!-- Container do Resumo estruturado -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 text-left mb-5 space-y-3 shadow-xl">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 border-b border-slate-700/60 pb-2 flex items-center gap-1.5">
+                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Resumo do Pedido
+            </h3>
+            <div class="grid grid-cols-2 gap-y-2.5 text-sm">
+                <span class="text-slate-400 font-medium">Usuario Roblox</span>
+                <span id="succ-roblox" class="text-white font-semibold text-right">---</span>
+
+                <span class="text-slate-400 font-medium">Email</span>
+                <span id="succ-email" class="text-white font-semibold text-right truncate pl-4">---</span>
+
+                <span class="text-slate-400 font-medium">Pacote</span>
+                <span id="succ-pacote" class="text-white font-semibold text-right">---</span>
+
+                <span class="text-slate-400 font-medium">Valor</span>
+                <span id="succ-valor" class="text-amber-400 font-bold text-right">---</span>
+
+                <span class="text-slate-400 font-medium">Pagamento</span>
+                <span id="succ-pagamento" class="text-white font-semibold text-right">---</span>
+
+                <span class="text-slate-400 font-medium">Status</span>
+                <span class="text-amber-400 font-bold text-right flex items-center justify-end gap-1">⏳ Aguardando Pagamento</span>
+            </div>
+        </div>
+
+        <!-- Instruções de Pagamento Dinâmicas -->
+        <div class="bg-slate-950/50 border border-slate-800 rounded-2xl p-5 text-left text-sm mb-6 shadow-inner">
+            <!-- Box para Cartão -->
+            <div id="box-pagamento-cartao" class="hidden space-y-2">
+                <div class="flex items-center gap-2 font-bold text-white text-base">
+                    <span>💳 Pagamento via Cartao</span>
                 </div>
-                <div class="bg-slate-900 p-4 rounded-xl font-mono text-xs text-slate-300 space-y-2 border border-slate-800">
-                    <p><span class="text-slate-500">Assunto:</span> Seu pedido na IZ Store está aguardando contato</p>
-                    <hr class="border-slate-800 my-2">
-                    <p class="text-slate-300 leading-relaxed italic text-sm">"Olá! Nossa equipe entrará em contato com você via Discord/WhatsApp para recebermos o pagamento e liberar seus Robux!"</p>
+                <p class="text-slate-300 leading-relaxed text-sm">
+                    Entre em contato via email (<span id="succ-email-padrao" class="text-amber-400 font-semibold select-all"></span>) informando seu usuario e o pedido para concluir o pagamento. Valor: <span id="succ-valor-cartao" class="text-amber-400 font-bold"></span>.
+                </p>
+            </div>
+            <!-- Box para Pix -->
+            <div id="box-pagamento-pix" class="hidden space-y-3">
+                <div class="flex items-center gap-2 font-bold text-white text-base">
+                    <span>💵 Pagamento via Pix</span>
+                </div>
+                <p class="text-slate-300 leading-relaxed text-sm">
+                    Efetue a transferência do valor exato de <span id="succ-valor-pix" class="text-amber-400 font-bold"></span> apontando para a chave Pix configurada:
+                </p>
+                <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-amber-400 select-all border border-slate-800 text-center font-bold tracking-wide" id="succ-chave-pix">
+                    ---
                 </div>
             </div>
         </div>
 
-        <button onclick="switchView('store')" class="mt-8 bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3 rounded-xl border border-slate-700 transition-colors">
-            Voltar ao Início
+        <p class="text-xs text-slate-500 italic mb-8 max-w-sm mx-auto leading-relaxed">
+            Apos o pagamento, seu Robux sera entregue em ate 24 horas. Guarde o comprovante.
+        </p>
+
+        <button onclick="switchView('store')" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md">
+            Voltar a Loja
         </button>
     </main>
 
-    <!-- PAINEL DA EQUIPE (ADMIN / VENDEDORES) -->
+    <!-- PAINEL DA EQUIPE -->
     <main id="view-dashboard" class="view-panel hidden flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-6 mb-8">
             <div>
@@ -264,27 +312,54 @@
             </div>
         </div>
 
-        <!-- Gerenciamento de Vendedores -->
-        <div id="admin-section" class="hidden bg-slate-800/40 border border-slate-800 rounded-3xl p-6 mb-8">
-            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <i data-lucide="user-plus" class="text-amber-400 w-5 h-5"></i> [Admin Master] Cadastrar Novo Vendedor
-            </h3>
-            <form onsubmit="adicionarVendedor(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Usuário do Vendedor</label>
-                    <input type="text" id="new-vendedor-user" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white text-sm" placeholder="Ex: vendedor_iz">
+        <!-- Seções exclusivas do Admin Master -->
+        <div id="admin-master-sections" class="hidden space-y-6 mb-8">
+            <!-- NOVO: Painel de Configurações do Sistema -->
+            <div class="bg-slate-800/40 border border-slate-800 rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="settings" class="text-amber-400 w-5 h-5"></i> Configurações Globais da Loja
+                </h3>
+                <form onsubmit="salvarConfiguracoes(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Email Padrão</label>
+                        <input type="email" id="cfg-email" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Chave Pix</label>
+                        <input type="text" id="cfg-pix" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Valor por 1 Robux (R$)</label>
+                        <input type="number" step="0.01" id="cfg-taxa" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> Salvar Configurações
+                    </button>
+                </form>
+            </div>
+
+            <!-- Cadastro de Vendedores -->
+            <div class="bg-slate-800/40 border border-slate-800 rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="user-plus" class="text-amber-400 w-5 h-5"></i> Cadastrar Novo Vendedor
+                </h3>
+                <form onsubmit="adicionarVendedor(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Usuário do Vendedor</label>
+                        <input type="text" id="new-vendedor-user" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Ex: vendedor_iz">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Senha de Acesso</label>
+                        <input type="password" id="new-vendedor-pass" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Usuário
+                    </button>
+                </form>
+                <div class="mt-4 pt-4 border-t border-slate-800">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Vendedores Ativos:</p>
+                    <div id="vendedores-list" class="flex flex-wrap gap-2"></div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Senha de Acesso</label>
-                    <input type="password" id="new-vendedor-pass" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white text-sm" placeholder="••••••••">
-                </div>
-                <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
-                    <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Usuário
-                </button>
-            </form>
-            <div class="mt-4 pt-4 border-t border-slate-800">
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Vendedores Ativos:</p>
-                <div id="vendedores-list" class="flex flex-wrap gap-2"></div>
             </div>
         </div>
 
@@ -301,10 +376,10 @@
                 <table class="w-full text-left text-sm border-collapse">
                     <thead>
                         <tr class="border-b border-slate-700 text-slate-400 font-bold bg-slate-900/30">
-                            <th class="p-4">Cliente / Telefone</th>
+                            <th class="p-4">Cliente / Roblox</th>
                             <th class="p-4">ID do Discord</th>
                             <th class="p-4">Produto</th>
-                            <th class="p-4">Valor</th>
+                            <th class="p-4">Valor / Método</th>
                             <th class="p-4">Status</th>
                             <th class="p-4 text-center">Ações</th>
                         </tr>
@@ -354,19 +429,29 @@
 
     <!-- LÓGICA DO JAVASCRIPT -->
     <script>
+        // Inicialização de Dados
         if (!localStorage.getItem('iz_orders')) {
             localStorage.setItem('iz_orders', JSON.stringify([
-                { id: 1001, nome: "Carlos Henrique", tel: "(11) 98888-7777", discord: "38491029481029", produto: "105 Robux", preco: 5.00, status: "Não entregue" }
+                { id: 1001, roblox: "Keiie", email: "9w82728@8", discord: "38491029481029", produto: "63 Robux", preco: 3.00, pagamento: "Cartao", status: "Não entregue" }
             ]));
         }
         if (!localStorage.getItem('iz_vendedores')) {
             localStorage.setItem('iz_vendedores', JSON.stringify([]));
+        }
+        // Inicialização das Configurações do Administrador
+        if (!localStorage.getItem('iz_config')) {
+            localStorage.setItem('iz_config', JSON.stringify({
+                email: "suporte@izstore.com",
+                pix: "chave-pix-padrao@izstore.com",
+                taxa: 0.21
+            }));
         }
 
         let produtoSelecionadoAtual = null;
         let usuarioLogado = null;
 
         lucide.createIcons();
+        carregarConfigLoja();
 
         function switchView(viewName) {
             document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
@@ -379,29 +464,37 @@
             document.getElementById('dropdownMenu').classList.toggle('hidden');
         }
 
-        // Lógica da quantidade personalizada (R$ 0,21 por Robux)
+        // Carrega configurações dinâmicas gerenciadas pelo Admin
+        function carregarConfigLoja() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            document.getElementById('custom-rate-text').innerText = `R$ ${config.taxa.toFixed(2).replace('.', ',')} por cada 1 Robux. Mínimo de 60.`;
+            atualizarPrecoCustomizado();
+        }
+
         function atualizarPrecoCustomizado() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
             const input = document.getElementById('custom-qty-input');
             let qtd = parseInt(input.value);
             if (isNaN(qtd)) qtd = 0;
             
-            const precoTotal = qtd * 0.21;
+            const precoTotal = qtd * config.taxa;
             document.getElementById('custom-price-display').innerText = `R$ ${precoTotal.toFixed(2).replace('.', ',')}`;
         }
 
         function avancarCompraCustomizada() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
             const input = document.getElementById('custom-qty-input');
             let qtd = parseInt(input.value);
 
             if (isNaN(qtd) || qtd < 60) {
-                alert("A quantidade mínima para o pacote personalizado é de 60 Robux.");
+                alert("A quantidade mínima para a compra personalizada é de 60 Robux.");
                 input.value = 60;
                 atualizarPrecoCustomizado();
                 return;
             }
 
-            const precoTotal = qtd * 0.21;
-            selecionarProduto(`${qtd} Robux (Custom)`, precoTotal);
+            const precoTotal = qtd * config.taxa;
+            selecionarProduto(`${qtd} Robux`, precoTotal);
         }
 
         function selecionarProduto(nome, preco) {
@@ -414,26 +507,51 @@
 
         function processarCompra(event) {
             event.preventDefault();
-            const nome = document.getElementById('chk-nome').value;
-            const tel = document.getElementById('chk-tel').value;
+            const roblox = document.getElementById('chk-roblox').value.trim();
+            const email = document.getElementById('chk-email').value.trim();
             const discord = document.getElementById('chk-discord').value;
+            const pagamento = document.getElementById('chk-pagamento').value;
 
             const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
             const novoId = pedidos.length > 0 ? pedidos[pedidos.length - 1].id + 1 : 1001;
             
             pedidos.push({
-                id: novoId, nome, tel, discord,
+                id: novoId, roblox, email, discord, pagamento,
                 produto: produtoSelecionadoAtual.nome,
                 preco: produtoSelecionadoAtual.preco,
                 status: "Não entregue"
             });
             localStorage.setItem('iz_orders', JSON.stringify(pedidos));
 
-            document.getElementById('chk-nome').value = '';
-            document.getElementById('chk-tel').value = '';
+            // Configura e monta a tela de confirmação profissional do cliente
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            const valorFormatado = `R$ ${produtoSelecionadoAtual.preco.toFixed(2).replace('.', ',')}`;
+
+            document.getElementById('succ-roblox').innerText = roblox;
+            document.getElementById('succ-email').innerText = email;
+            document.getElementById('succ-pacote').innerText = produtoSelecionadoAtual.nome;
+            document.getElementById('succ-valor').innerText = valorFormatado;
+            document.getElementById('succ-pagamento').innerText = pagamento === "Cartao" ? "Cartao" : "Pix";
+
+            // Alterna os contêineres de informação de pagamento
+            if (pagamento === "Cartao") {
+                document.getElementById('box-pagamento-cartao').classList.remove('hidden');
+                document.getElementById('box-pagamento-pix').classList.add('hidden');
+                document.getElementById('succ-email-padrao').innerText = config.email;
+                document.getElementById('succ-valor-cartao').innerText = valorFormatado;
+            } else {
+                document.getElementById('box-pagamento-cartao').classList.add('hidden');
+                document.getElementById('box-pagamento-pix').classList.remove('hidden');
+                document.getElementById('succ-valor-pix').innerText = valorFormatado;
+                document.getElementById('succ-chave-pix').innerText = config.pix;
+            }
+
+            // Limpa formulário
+            document.getElementById('chk-roblox').value = '';
+            document.getElementById('chk-email').value = '';
             document.getElementById('chk-discord').value = '';
 
-            showToast("Pedido enviado para a fila automática!");
+            showToast("Pedido processado com sucesso!");
             switchView('success');
         }
 
@@ -477,10 +595,34 @@
         function fazerLoginSucesso() {
             closeLoginModal();
             document.getElementById('current-username').innerText = usuarioLogado.username;
-            document.getElementById('admin-section').classList.toggle('hidden', usuarioLogado.role !== 'admin');
+            document.getElementById('admin-master-sections').classList.toggle('hidden', usuarioLogado.role !== 'admin');
+            
+            if(usuarioLogado.role === 'admin') {
+                const config = JSON.parse(localStorage.getItem('iz_config'));
+                document.getElementById('cfg-email').value = config.email;
+                document.getElementById('cfg-pix').value = config.pix;
+                document.getElementById('cfg-taxa').value = config.taxa;
+            }
+
             renderizarDashboard();
             switchView('dashboard');
             showToast(`Bem-vindo, ${usuarioLogado.username}!`);
+        }
+
+        function salvarConfiguracoes(event) {
+            event.preventDefault();
+            const email = document.getElementById('cfg-email').value.trim();
+            const pix = document.getElementById('cfg-pix').value.trim();
+            const taxa = parseFloat(document.getElementById('cfg-taxa').value);
+
+            if (isNaN(taxa) || taxa <= 0) {
+                alert("Insira um valor válido por Robux.");
+                return;
+            }
+
+            localStorage.setItem('iz_config', JSON.stringify({ email, pix, taxa }));
+            carregarConfigLoja();
+            showToast("Configurações atualizadas!");
         }
 
         function logout() {
@@ -532,7 +674,7 @@
             const pedido = pedidos.find(p => p.id === id);
             
             if (pedido && pedido.status !== "Cancelado") {
-                alert("Para sua segurança, só é permitido apagar pedidos que estejam marcados como 'Cancelado'.");
+                alert("Para segurança, só é permitido apagar pedidos que estejam marcados como 'Cancelado'.");
                 return;
             }
 
@@ -540,7 +682,7 @@
                 const filtrados = pedidos.filter(p => p.id !== id);
                 localStorage.setItem('iz_orders', JSON.stringify(filtrados));
                 renderizarDashboard();
-                showToast("Pedido removido com sucesso.");
+                showToast("Pedido removido.");
             }
         }
 
@@ -572,21 +714,27 @@
             };
 
             pedidos.slice().reverse().forEach(p => {
-                const badge = `<span class="px-2.5 py-1 text-xs font-bold rounded-lg border ${statusClasses[p.status]}">${p.status}</span>`;
+                const badge = `<span class="px-2.5 py-1 text-xs font-bold rounded-lg border ${statusClasses[p.status || 'Não entregue']}">${p.status || 'Não entregue'}</span>`;
                 const options = ["Não entregue", "Entregue", "Respondido", "Cancelado"].map(opt => 
-                    `<option value="${opt}" ${p.status === opt ? 'selected' : ''}>${opt}</option>`
+                    `<option value="${opt}" ${(p.status || "Não entregue") === opt ? 'selected' : ''}>${opt}</option>`
                 ).join('');
 
                 tableBody.innerHTML += `
                     <tr class="hover:bg-slate-900/40 transition-colors">
-                        <td class="p-4"><div class="font-bold text-white">${p.nome}</div><div class="text-xs text-slate-400">${p.tel}</div></td>
-                        <td class="p-4 text-amber-400 font-mono font-medium">${p.discord}</td>
+                        <td class="p-4">
+                            <div class="font-bold text-white">${p.roblox || p.nome || '---'}</div>
+                            <div class="text-xs text-slate-400 max-w-[180px] truncate">${p.email || p.tel || '---'}</div>
+                        </td>
+                        <td class="p-4 text-amber-400 font-mono font-medium">${p.discord || '---'}</td>
                         <td class="p-4 text-slate-300">${p.produto}</td>
-                        <td class="p-4 font-bold text-white">R$ ${p.preco.toFixed(2).replace('.', ',')}</td>
+                        <td class="p-4">
+                            <div class="font-bold text-white">R$ ${p.preco.toFixed(2).replace('.', ',')}</div>
+                            <div class="text-[11px] text-slate-500 font-medium uppercase">${p.pagamento || 'Cartao'}</div>
+                        </td>
                         <td class="p-4">${badge}</td>
                         <td class="p-4">
                             <div class="flex items-center justify-center gap-2">
-                                <select onchange="alterarStatusPedido(${p.id}, this.value)" class="bg-slate-900 border border-slate-700 rounded-lg text-xs px-2 py-1.5 text-slate-300">
+                                <select onchange="alterarStatusPedido(${p.id}, this.value)" class="bg-slate-900 border border-slate-700 rounded-lg text-xs px-2 py-1.5 text-slate-300 focus:outline-none">
                                     ${options}
                                 </select>
                                 <button onclick="apagarPedido(${p.id})" class="p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-400 hover:text-rose-400">
