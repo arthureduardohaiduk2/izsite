@@ -3,109 +3,570 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sua Loja Automática</title>
+    <title>IZ STORE - Robux Automático</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .dark-glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
 
-    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 backdrop-blur-md bg-white/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2 font-bold text-xl text-indigo-600 tracking-tight">
-                <i data-lucide="zap" class="w-6 h-6 fill-indigo-600"></i>
-                <span>AutoStore</span>
+    <!-- NOTIFICAÇÃO GLOBAL -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-emerald-500 text-slate-950 px-5 py-3 rounded-xl font-bold shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span id="toast-message">Ação realizada com sucesso!</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="dark-glass border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div onclick="switchView('store')" class="flex items-center gap-2 font-black text-2xl tracking-wider text-amber-400 cursor-pointer group">
+                <div class="bg-amber-400/10 p-2 rounded-xl group-hover:scale-110 transition-transform">
+                    <i data-lucide="gem" class="w-7 h-7 text-amber-400 fill-amber-400/20"></i>
+                </div>
+                <span>IZ <span class="text-white font-light">STORE</span></span>
             </div>
-            <div class="text-sm text-slate-500 flex items-center gap-1">
-                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Compra 100% Segura
+
+            <!-- Controles da Direita -->
+            <div class="flex items-center gap-4">
+                <span class="text-xs bg-slate-800 text-slate-400 px-3 py-1.5 rounded-full font-medium hidden sm:flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Entrega Ativa
+                </span>
+                
+                <!-- Menu de 3 Pontos -->
+                <div class="relative">
+                    <button onclick="toggleMenu()" class="p-2.5 hover:bg-slate-800 rounded-xl transition-colors border border-slate-800 text-slate-400 hover:text-white" id="menuBtn">
+                        <i data-lucide="more-vertical" class="w-5 h-5"></i>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-slate-800 border border-slate-700 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <button onclick="switchView('store')" class="w-full text-left px-4 py-2.5 rounded-lg text-sm hover:bg-slate-700 flex items-center gap-2 transition-colors">
+                            <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-400"></i> Comprar Robux
+                        </button>
+                        <button onclick="openLoginModal()" class="w-full text-left px-4 py-2.5 rounded-lg text-sm hover:bg-slate-700 flex items-center gap-2 text-amber-400 font-semibold transition-colors border-t border-slate-700/50 mt-1 pt-3">
+                            <i data-lucide="users" class="w-4 h-4"></i> Entrar com Equipe
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
-                Nossos Produtos
+    <!-- VITRINE DA LOJA -->
+    <main id="view-store" class="view-panel flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">
+                Adquira seus <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Robux</span>
             </h1>
-            <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-                Escolha o produto ideal para você. O faturamento e envio são processados de forma 100% automática.
+            <p class="mt-4 text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
+                Selecione o pacote desejado abaixo. Processo rápido de ponta a ponta.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group">
-                <div class="bg-slate-100 h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80" alt="Headphone Premium" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    <span class="absolute top-4 right-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">Destaque</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Produto 1 -->
+            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6 flex flex-col relative overflow-hidden group hover:border-amber-500/30 hover:bg-slate-800 transition-all duration-300">
+                <div class="bg-amber-400/10 text-amber-400 p-3 rounded-2xl w-fit mb-4">
+                    <i data-lucide="coins" class="w-6 h-6"></i>
                 </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Headphone Premium Pro</h3>
-                    <p class="text-slate-600 text-sm mb-6 flex-grow">Cancelamento de ruído ativo, bateria de 40 horas e som de altíssima fidelidade para o seu dia a dia.</p>
-                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
-                        <span class="text-2xl font-black text-slate-900">R$ 599,00</span>
-                        <button onclick="comprarProduto('Headphone Premium Pro', 599.00, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=80')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-indigo-600/10">
-                            Comprar <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
+                <h3 class="text-2xl font-bold text-white mb-1">60 ~ 63 Robux</h3>
+                <p class="text-slate-400 text-sm mb-6">Excelente para pequenas compras dentro do jogo.</p>
+                <div class="mt-auto pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-500 block uppercase font-bold tracking-wider">Por apenas</span>
+                        <span class="text-2xl font-black text-white">R$ 4,00</span>
                     </div>
+                    <button onclick="selecionarProduto('60-63 Robux', 4.00)" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-3 rounded-xl transition-all shadow-lg shadow-amber-400/10 flex items-center gap-2">
+                        Comprar <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group">
-                <div class="bg-slate-100 h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Smartwatch Minimalista" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <!-- Produto 2 -->
+            <div class="bg-slate-800/50 border border-amber-500/40 rounded-3xl p-6 flex flex-col relative overflow-hidden group hover:bg-slate-800 transition-all duration-300 ring-4 ring-amber-400/5">
+                <div class="absolute top-0 right-6 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-b-xl shadow">RECOMENDADO</div>
+                <div class="bg-amber-400/20 text-amber-400 p-3 rounded-2xl w-fit mb-4">
+                    <i data-lucide="zap" class="w-6 h-6 fill-amber-400/20"></i>
                 </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Smartwatch Minimalist</h3>
-                    <p class="text-slate-600 text-sm mb-6 flex-grow">Monitore sua saúde, receba notificações e controle suas músicas com um design elegante e tela AMOLED.</p>
-                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
-                        <span class="text-2xl font-black text-slate-900">R$ 349,00</span>
-                        <button onclick="comprarProduto('Smartwatch Minimalist', 349.00, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=80')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-indigo-600/10">
-                            Comprar <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
+                <h3 class="text-2xl font-bold text-white mb-1">105 Robux</h3>
+                <p class="text-slate-400 text-sm mb-6">Melhor custo-benefício para dar um upgrade no avatar.</p>
+                <div class="mt-auto pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-500 block uppercase font-bold tracking-wider">Por apenas</span>
+                        <span class="text-2xl font-black text-white">R$ 5,00</span>
                     </div>
+                    <button onclick="selecionarProduto('105 Robux', 5.00)" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-bold px-5 py-3 rounded-xl transition-all shadow-lg shadow-orange-500/20 flex items-center gap-2">
+                        Comprar <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group">
-                <div class="bg-slate-100 h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Teclado Mecânico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <!-- Produto 3 -->
+            <div class="bg-slate-800/50 border border-slate-800 rounded-3xl p-6 flex flex-col relative overflow-hidden group hover:border-amber-500/30 hover:bg-slate-800 transition-all duration-300">
+                <div class="bg-orange-500/10 text-orange-400 p-3 rounded-2xl w-fit mb-4">
+                    <i data-lucide="crown" class="w-6 h-6"></i>
                 </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Teclado Mecânico RGB</h3>
-                    <p class="text-slate-600 text-sm mb-6 flex-grow">Switches de alta durabilidade, iluminação RGB customizável e resposta instantânea para jogos ou digitação.</p>
-                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
-                        <span class="text-2xl font-black text-slate-900">R$ 279,90</span>
-                        <button onclick="comprarProduto('Teclado Mecânico RGB', 279.90, 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=200&q=80')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-indigo-600/10">
-                            Comprar <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
+                <h3 class="text-2xl font-bold text-white mb-1">212 Robux</h3>
+                <p class="text-slate-400 text-sm mb-6">Quantidade alta para quem busca os melhores itens.</p>
+                <div class="mt-auto pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-slate-500 block uppercase font-bold tracking-wider">Por apenas</span>
+                        <span class="text-2xl font-black text-white">R$ 10,00</span>
                     </div>
+                    <button onclick="selecionarProduto('212 Robux', 10.00)" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-5 py-3 rounded-xl transition-all shadow-lg shadow-amber-400/10 flex items-center gap-2">
+                        Comprar <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-100 py-6 text-center text-sm text-slate-400">
-        &copy; 2026 AutoStore. Todos os direitos reservados.
+    <!-- TELA DE CHECKOUT (CONFIRMAÇÃO) -->
+    <main id="view-checkout" class="view-panel hidden flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <button onclick="switchView('store')" class="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-6 font-medium text-sm transition-colors">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar à vitrine
+        </button>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+            <!-- Formulário -->
+            <form onsubmit="processarCompra(event)" class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 space-y-5 md:col-span-3">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-700 pb-3">
+                    <i data-lucide="user-check" class="text-amber-400 w-5 h-5"></i> Dados de Confirmação
+                </h2>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Seu Nome</label>
+                    <input type="text" id="chk-nome" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: Lucas Silva">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Telefone para Contato</label>
+                    <input type="tel" id="chk-tel" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: (11) 99999-9999">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">ID do Discord <span class="text-amber-400">*</span></label>
+                    <input type="text" id="chk-discord" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white" placeholder="Ex: lucas_games">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-slate-950 font-extrabold py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-lg mt-6">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i> Confirmar e Enviar Pedido
+                </button>
+            </form>
+
+            <!-- Resumo -->
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:col-span-2 space-y-6">
+                <h3 class="text-lg font-bold text-white border-b border-slate-700 pb-3 flex items-center gap-2">
+                    <i data-lucide="shopping-cart" class="text-amber-400 w-5 h-5"></i> Item Selecionado
+                </h3>
+                <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-700/50 flex items-center gap-3">
+                    <div class="bg-amber-400/10 text-amber-400 p-2.5 rounded-xl">
+                        <i data-lucide="gem" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 id="summary-name" class="font-bold text-white text-base">---</h4>
+                        <p class="text-xs text-slate-500">Garantia IZ Store</p>
+                    </div>
+                </div>
+                <div class="space-y-3 text-sm pt-2">
+                    <div class="flex justify-between text-slate-400">
+                        <span>Subtotal</span>
+                        <span id="summary-price" class="text-white font-medium">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-400">
+                        <span>Taxa</span>
+                        <span class="text-emerald-400 font-semibold">Grátis</span>
+                    </div>
+                    <hr class="border-slate-700">
+                    <div class="flex justify-between text-base font-black text-white">
+                        <span>Total</span>
+                        <span id="summary-total" class="text-amber-400 text-xl">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- TELA DE SUCESSO E SIMULAÇÃO DE EMAIL -->
+    <main id="view-success" class="view-panel hidden flex-grow max-w-2xl mx-auto px-4 py-16 w-full text-center">
+        <div class="w-20 h-20 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20">
+            <i data-lucide="mail" class="w-10 h-10"></i>
+        </div>
+        <h2 class="text-3xl font-black text-white mb-2">Pedido Registrado!</h2>
+        <p class="text-slate-400 max-w-md mx-auto mb-8">
+            O sistema simulou o envio automático dos e-mails de confirmação do pedido:
+        </p>
+
+        <div class="space-y-4 text-left">
+            <!-- Email Comprador -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+                <div class="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> Para o Comprador (Você):
+                </div>
+                <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-slate-300 space-y-1">
+                    <p><span class="text-slate-500">Assunto:</span> Seu pedido na IZ Store está aguardando contato</p>
+                    <hr class="border-slate-800 my-1">
+                    <p class="text-slate-400 italic">"Olá! Nossa equipe entrará em contato com você via Discord/WhatsApp para recebermos o pagamento e liberar seus Robux!"</p>
+                </div>
+            </div>
+
+            <!-- Email Vendedor -->
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4">
+                <div class="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Para a Equipe de Vendas (Vendedor):
+                </div>
+                <div class="bg-slate-900 p-3 rounded-xl font-mono text-xs text-slate-300 space-y-1">
+                    <p><span class="text-slate-500">Assunto:</span> [NOVO PEDIDO] Nova venda de Robux pendente</p>
+                    <hr class="border-slate-800 my-1">
+                    <p><span class="text-slate-500">Item:</span> <span id="log-item">---</span></p>
+                    <p><span class="text-slate-500">Cliente:</span> <span id="log-cliente">---</span></p>
+                    <p><span class="text-slate-500">Discord ID:</span> <span id="log-discord">---</span></p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="switchView('store')" class="mt-8 bg-slate-800 hover:bg-slate-700 text-white font-bold px-6 py-3 rounded-xl border border-slate-700 transition-colors">
+            Voltar ao Início
+        </button>
+    </main>
+
+    <!-- PAINEL DA EQUIPE (ADMIN / VENDEDORES) -->
+    <main id="view-dashboard" class="view-panel hidden flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-6 mb-8">
+            <div>
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">
+                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Área Restrita da Equipe
+                </div>
+                <h2 class="text-3xl font-black text-white">Painel Geral da IZ Store</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="bg-slate-800 border border-slate-700 text-slate-300 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    <i data-lucide="user" class="w-4 h-4 text-amber-400"></i> Logado como: <span id="current-username">admin00</span>
+                </span>
+                <button onclick="logout()" class="p-2 bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-slate-950 rounded-xl transition-all border border-rose-500/20">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Gerenciamento de Vendedores (Apenas Admin00 vê) -->
+        <div id="admin-section" class="hidden bg-slate-800/40 border border-slate-800 rounded-3xl p-6 mb-8">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i data-lucide="user-plus" class="text-amber-400 w-5 h-5"></i> [Admin Master] Cadastrar Novo Vendedor
+            </h3>
+            <form onsubmit="adicionarVendedor(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Usuário do Vendedor</label>
+                    <input type="text" id="new-vendedor-user" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white text-sm" placeholder="Ex: vendedor_iz">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Senha de Acesso</label>
+                    <input type="password" id="new-vendedor-pass" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-amber-400 text-white text-sm" placeholder="••••••••">
+                </div>
+                <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Usuário
+                </button>
+            </form>
+            <div class="mt-4 pt-4 border-t border-slate-800">
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Vendedores Ativos:</p>
+                <div id="vendedores-list" class="flex flex-wrap gap-2"></div>
+            </div>
+        </div>
+
+        <!-- Listagem de Pedidos -->
+        <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="list-ordered" class="text-amber-400 w-5 h-5"></i> Gerenciar Fluxo de Pedidos
+                </h3>
+                <span id="orders-count" class="text-xs bg-slate-900 text-slate-400 px-3 py-1 rounded-full border border-slate-700 font-bold">0 Pedidos</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-400 font-bold bg-slate-900/30">
+                            <th class="p-4">Cliente / Telefone</th>
+                            <th class="p-4">ID do Discord</th>
+                            <th class="p-4">Produto</th>
+                            <th class="p-4">Valor</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+            <div id="no-orders-message" class="text-center py-12 text-slate-500 text-sm hidden">
+                <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 opacity-30"></i> Nenhum pedido registrado.
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 rounded-3xl w-full max-w-md p-6 relative shadow-2xl">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded-lg transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="bg-amber-400/10 text-amber-400 p-3 rounded-2xl w-fit mx-auto mb-3">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Login da Equipe</h3>
+                <p class="text-xs text-slate-400 mt-1">Acesso para admin00 e vendedores da IZ Store.</p>
+            </div>
+            <form onsubmit="autenticarEquipe(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Usuário</label>
+                    <input type="text" id="login-user" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Senha</label>
+                    <input type="password" id="login-pass" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-3.5 rounded-xl transition-colors shadow-lg">
+                    Entrar no Painel
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FOOTER -->
+    <footer class="bg-slate-950/40 border-t border-slate-800/80 py-6 text-center text-xs text-slate-500 mt-auto">
+        &copy; 2026 IZ Store. Processos organizados de forma automática.
     </footer>
 
+    <!-- LÓGICA DO JAVASCRIPT -->
     <script>
-        // Inicializa os ícones do Lucide
+        // Criação de banco local fictício se não existir
+        if (!localStorage.getItem('iz_orders')) {
+            localStorage.setItem('iz_orders', JSON.stringify([
+                { id: 1001, nome: "Carlos Henrique", tel: "(11) 98888-7777", discord: "carlos_gameplay", produto: "105 Robux", preco: 5.00, status: "Não entregue" }
+            ]));
+        }
+        if (!localStorage.getItem('iz_vendedores')) {
+            localStorage.setItem('iz_vendedores', JSON.stringify([]));
+        }
+
+        let produtoSelecionadoAtual = null;
+        let usuarioLogado = null;
+
         lucide.createIcons();
 
-        function comprarProduto(nome, preco, imagem) {
-            // Cria o objeto do produto selecionado
-            const produto = {
-                nome: nome,
-                preco: preco,
-                imagem: imagem
+        function switchView(viewName) {
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            document.getElementById('dropdownMenu').classList.add('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
+        }
+
+        function selecionarProduto(nome, preco) {
+            produtoSelecionadoAtual = { nome, preco };
+            document.getElementById('summary-name').innerText = nome;
+            document.getElementById('summary-price').innerText = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+            document.getElementById('summary-total').innerText = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+            switchView('checkout');
+        }
+
+        function processarCompra(event) {
+            event.preventDefault();
+            const nome = document.getElementById('chk-nome').value;
+            const tel = document.getElementById('chk-tel').value;
+            const discord = document.getElementById('chk-discord').value;
+
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const novoId = pedidos.length > 0 ? pedidos[pedidos.length - 1].id + 1 : 1001;
+            
+            pedidos.push({
+                id: novoId, nome, tel, discord,
+                produto: produtoSelecionadoAtual.nome,
+                preco: produtoSelecionadoAtual.preco,
+                status: "Não entregue"
+            });
+            localStorage.setItem('iz_orders', JSON.stringify(pedidos));
+
+            // Configura os dados visuais do e-mail simulado
+            document.getElementById('log-item').innerText = `${produtoSelecionadoAtual.nome} (R$ ${produtoSelecionadoAtual.preco.toFixed(2).replace('.', ',')})`;
+            document.getElementById('log-cliente').innerText = `${nome} - Contato: ${tel}`;
+            document.getElementById('log-discord').innerText = `@${discord}`;
+
+            document.getElementById('chk-nome').value = '';
+            document.getElementById('chk-tel').value = '';
+            document.getElementById('chk-discord').value = '';
+
+            showToast("Pedido enviado para a fila automática!");
+            switchView('success');
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = text;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-[-100px]', 'opacity-0'); }, 3000);
+        }
+
+        function openLoginModal() {
+            document.getElementById('dropdownMenu').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function autenticarEquipe(event) {
+            event.preventDefault();
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            if (user === "admin00" && pass === "1357924680") {
+                usuarioLogado = { username: "admin00", role: "admin" };
+                fazerLoginSucesso();
+                return;
+            }
+
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            const vendedorEncontrado = vendedores.find(v => v.user === user && v.pass === pass);
+
+            if (vendedorEncontrado) {
+                usuarioLogado = { username: user, role: "vendedor" };
+                fazerLoginSucesso();
+            } else {
+                alert("❌ Acesso negado! Usuário ou senha incorretos.");
+            }
+        }
+
+        function fazerLoginSucesso() {
+            closeLoginModal();
+            document.getElementById('current-username').innerText = usuarioLogado.username;
+            document.getElementById('admin-section').classList.toggle('hidden', usuarioLogado.role !== 'admin');
+            renderizarDashboard();
+            switchView('dashboard');
+            showToast(`Bem-vindo, ${usuarioLogado.username}!`);
+        }
+
+        function logout() {
+            usuarioLogado = null;
+            switchView('store');
+            showToast("Sessão finalizada.");
+        }
+
+        function adicionarVendedor(event) {
+            event.preventDefault();
+            const user = document.getElementById('new-vendedor-user').value.trim();
+            const pass = document.getElementById('new-vendedor-pass').value;
+
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            if (user === "admin00" || vendedores.some(v => v.user === user)) {
+                alert("Este nome de usuário já está em uso!");
+                return;
+            }
+
+            vendedores.push({ user, pass });
+            localStorage.setItem('iz_vendedores', JSON.stringify(vendedores));
+            document.getElementById('new-vendedor-user').value = '';
+            document.getElementById('new-vendedor-pass').value = '';
+            renderizarDashboard();
+            showToast("Vendedor cadastrado!");
+        }
+
+        function removerVendedor(user) {
+            let vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            vendedores = vendedores.filter(v => v.user !== user);
+            localStorage.setItem('iz_vendedores', JSON.stringify(vendedores));
+            renderizarDashboard();
+            showToast("Vendedor removido.");
+        }
+
+        function alterarStatusPedido(id, novoStatus) {
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) {
+                pedido.status = novoStatus;
+                localStorage.setItem('iz_orders', JSON.stringify(pedidos));
+                renderizarDashboard();
+                showToast("Status atualizado!");
+            }
+        }
+
+        function apagarPedido(id) {
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const pedido = pedidos.find(p => p.id === id);
+            
+            if (pedido && pedido.status !== "Cancelado") {
+                alert("Para sua segurança, só é permitido apagar pedidos que estejam marcados como 'Cancelado'.");
+                return;
+            }
+
+            if (confirm("Deseja apagar este pedido definitivamente?")) {
+                const filtrados = pedidos.filter(p => p.id !== id);
+                localStorage.setItem('iz_orders', JSON.stringify(filtrados));
+                renderizarDashboard();
+                showToast("Pedido removido com sucesso.");
+            }
+        }
+
+        function renderizarDashboard() {
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            const listContainer = document.getElementById('vendedores-list');
+            listContainer.innerHTML = '';
+            
+            vendedores.forEach(v => {
+                listContainer.innerHTML += `
+                    <span class="inline-flex items-center gap-1.5 bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg text-xs font-semibold text-slate-300">
+                        <i data-lucide="user-cog" class="w-3 h-3 text-amber-400"></i> ${v.user}
+                        <button onclick="removerVendedor('${v.user}')" class="text-rose-400 hover:text-rose-600 font-bold ml-1">×</button>
+                    </span>`;
+            });
+
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const tableBody = document.getElementById('orders-table-body');
+            document.getElementById('orders-count').innerText = `${pedidos.length} Pedidos`;
+            tableBody.innerHTML = '';
+
+            document.getElementById('no-orders-message').classList.toggle('hidden', pedidos.length > 0);
+
+            const statusClasses = {
+                "Não entregue": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+                "Entregue": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                "Respondido": "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                "Cancelado": "bg-rose-500/10 text-rose-400 border-rose-500/20"
             };
 
-            // Salva no localStorage (memória do navegador)
-            localStorage.setItem('produtoSelecionado', JSON.stringify(produto));
+            pedidos.slice().reverse().forEach(p => {
+                const badge = `<span class="px-2.5 py-1 text-xs font-bold rounded-lg border ${statusClasses[p.status]}">${p.status}</span>`;
+                const options = ["Não entregue", "Entregue", "Respondido", "Cancelado"].map(opt => 
+                    `<option value="${opt}" ${p.status === opt ? 'selected' : ''}>${opt}</option>`
+                ).join('');
 
-            // Redireciona automaticamente para a página de confirmação
-            window.location.href = 'confirmacao.html';
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/40 transition-colors">
+                        <td class="p-4"><div class="font-bold text-white">${p.nome}</div><div class="text-xs text-slate-400">${p.tel}</div></td>
+                        <td class="p-4 text-amber-400 font-mono font-medium">@${p.discord}</td>
+                        <td class="p-4 text-slate-300">${p.produto}</td>
+                        <td class="p-4 font-bold text-white">R$ ${p.preco.toFixed(2).replace('.', ',')}</td>
+                        <td class="p-4">${badge}</td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-center gap-2">
+                                <select onchange="alterarStatusPedido(${p.id}, this.value)" class="bg-slate-900 border border-slate-700 rounded-lg text-xs px-2 py-1.5 text-slate-300">
+                                    ${options}
+                                </select>
+                                <button onclick="apagarPedido(${p.id})" class="p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-400 hover:text-rose-400">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
         }
     </script>
 </body>
