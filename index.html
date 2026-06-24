@@ -295,4 +295,457 @@
 
     <!-- PAINEL DA EQUIPE -->
     <main id="view-dashboard" class="view-panel hidden flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:ite
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-6 mb-8">
+            <div>
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">
+                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Área Restrita da Equipe
+                </div>
+                <h2 class="text-3xl font-black text-white">Painel Geral da IZ Store</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="bg-slate-800 border border-slate-700 text-slate-300 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2">
+                    <i data-lucide="user" class="w-4 h-4 text-amber-400"></i> Logado como: <span id="current-username">admin00</span>
+                </span>
+                <button onclick="logout()" class="p-2 bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-slate-950 rounded-xl transition-all border border-rose-500/20">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Seções exclusivas do Admin Master -->
+        <div id="admin-master-sections" class="hidden space-y-6 mb-8">
+            <!-- NOVO: Painel de Configurações do Sistema -->
+            <div class="bg-slate-800/40 border border-slate-800 rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="settings" class="text-amber-400 w-5 h-5"></i> Configurações Globais da Loja
+                </h3>
+                <form onsubmit="salvarConfiguracoes(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Email Padrão</label>
+                        <input type="email" id="cfg-email" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Chave Pix</label>
+                        <input type="text" id="cfg-pix" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Valor por 1 Robux (R$)</label>
+                        <input type="number" step="0.01" id="cfg-taxa" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="save" class="w-4 h-4"></i> Salvar Configurações
+                    </button>
+                </form>
+            </div>
+
+            <!-- Cadastro de Vendedores -->
+            <div class="bg-slate-800/40 border border-slate-800 rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="user-plus" class="text-amber-400 w-5 h-5"></i> Cadastrar Novo Vendedor
+                </h3>
+                <form onsubmit="adicionarVendedor(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Usuário do Vendedor</label>
+                        <input type="text" id="new-vendedor-user" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400" placeholder="Ex: vendedor_iz">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Senha de Acesso</label>
+                        <input type="password" id="new-vendedor-pass" required class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-amber-400" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl transition-colors text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Usuário
+                    </button>
+                </form>
+                <div class="mt-4 pt-4 border-t border-slate-800">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Vendedores Ativos:</p>
+                    <div id="vendedores-list" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listagem de Pedidos -->
+        <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="list-ordered" class="text-amber-400 w-5 h-5"></i> Gerenciar Fluxo de Pedidos
+                </h3>
+                <span id="orders-count" class="text-xs bg-slate-900 text-slate-400 px-3 py-1 rounded-full border border-slate-700 font-bold">0 Pedidos</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-400 font-bold bg-slate-900/30">
+                            <th class="p-4">Cliente / Roblox</th>
+                            <th class="p-4">ID do Discord</th>
+                            <th class="p-4">Produto</th>
+                            <th class="p-4">Valor / Método</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+            <div id="no-orders-message" class="text-center py-12 text-slate-500 text-sm hidden">
+                <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 opacity-30"></i> Nenhum pedido registrado.
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 rounded-3xl w-full max-w-md p-6 relative shadow-2xl">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded-lg transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="bg-amber-400/10 text-amber-400 p-3 rounded-2xl w-fit mx-auto mb-3">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Login da Equipe</h3>
+                <p class="text-xs text-slate-400 mt-1">Acesso para admin00 e vendedores da IZ Store.</p>
+            </div>
+            <form onsubmit="autenticarEquipe(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Usuário</label>
+                    <input type="text" id="login-user" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Senha</label>
+                    <input type="password" id="login-pass" required class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                </div>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-3.5 rounded-xl transition-colors shadow-lg">
+                    Entrar no Painel
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FOOTER -->
+    <footer class="bg-slate-950/40 border-t border-slate-800/80 py-6 text-center text-xs text-slate-500 mt-auto">
+        &copy; 2026 IZ Store. Processos organizados de forma automática.
+    </footer>
+
+    <!-- LÓGICA DO JAVASCRIPT -->
+    <script>
+        // Inicialização de Dados
+        if (!localStorage.getItem('iz_orders')) {
+            localStorage.setItem('iz_orders', JSON.stringify([
+                { id: 1001, roblox: "Keiie", email: "9w82728@8", discord: "38491029481029", produto: "63 Robux", preco: 3.00, pagamento: "Cartao", status: "Não entregue" }
+            ]));
+        }
+        if (!localStorage.getItem('iz_vendedores')) {
+            localStorage.setItem('iz_vendedores', JSON.stringify([]));
+        }
+        // Inicialização das Configurações do Administrador
+        if (!localStorage.getItem('iz_config')) {
+            localStorage.setItem('iz_config', JSON.stringify({
+                email: "suporte@izstore.com",
+                pix: "chave-pix-padrao@izstore.com",
+                taxa: 0.21
+            }));
+        }
+
+        let produtoSelecionadoAtual = null;
+        let usuarioLogado = null;
+
+        lucide.createIcons();
+        carregarConfigLoja();
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            document.getElementById('dropdownMenu').classList.add('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('hidden');
+        }
+
+        // Carrega configurações dinâmicas gerenciadas pelo Admin
+        function carregarConfigLoja() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            document.getElementById('custom-rate-text').innerText = `R$ ${config.taxa.toFixed(2).replace('.', ',')} por cada 1 Robux. Mínimo de 60.`;
+            atualizarPrecoCustomizado();
+        }
+
+        function atualizarPrecoCustomizado() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            const input = document.getElementById('custom-qty-input');
+            let qtd = parseInt(input.value);
+            if (isNaN(qtd)) qtd = 0;
+            
+            const precoTotal = qtd * config.taxa;
+            document.getElementById('custom-price-display').innerText = `R$ ${precoTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+        function avancarCompraCustomizada() {
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            const input = document.getElementById('custom-qty-input');
+            let qtd = parseInt(input.value);
+
+            if (isNaN(qtd) || qtd < 60) {
+                alert("A quantidade mínima para a compra personalizada é de 60 Robux.");
+                input.value = 60;
+                atualizarPrecoCustomizado();
+                return;
+            }
+
+            const precoTotal = qtd * config.taxa;
+            selecionarProduto(`${qtd} Robux`, precoTotal);
+        }
+
+        function selecionarProduto(nome, preco) {
+            produtoSelecionadoAtual = { nome, preco };
+            document.getElementById('summary-name').innerText = nome;
+            document.getElementById('summary-price').innerText = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+            document.getElementById('summary-total').innerText = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+            switchView('checkout');
+        }
+
+        function processarCompra(event) {
+            event.preventDefault();
+            const roblox = document.getElementById('chk-roblox').value.trim();
+            const email = document.getElementById('chk-email').value.trim();
+            const discord = document.getElementById('chk-discord').value;
+            const pagamento = document.getElementById('chk-pagamento').value;
+
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const novoId = pedidos.length > 0 ? pedidos[pedidos.length - 1].id + 1 : 1001;
+            
+            pedidos.push({
+                id: novoId, roblox, email, discord, pagamento,
+                produto: produtoSelecionadoAtual.nome,
+                preco: produtoSelecionadoAtual.preco,
+                status: "Não entregue"
+            });
+            localStorage.setItem('iz_orders', JSON.stringify(pedidos));
+
+            // Configura e monta a tela de confirmação profissional do cliente
+            const config = JSON.parse(localStorage.getItem('iz_config'));
+            const valorFormatado = `R$ ${produtoSelecionadoAtual.preco.toFixed(2).replace('.', ',')}`;
+
+            document.getElementById('succ-roblox').innerText = roblox;
+            document.getElementById('succ-email').innerText = email;
+            document.getElementById('succ-pacote').innerText = produtoSelecionadoAtual.nome;
+            document.getElementById('succ-valor').innerText = valorFormatado;
+            document.getElementById('succ-pagamento').innerText = pagamento === "Cartao" ? "Cartao" : "Pix";
+
+            // Alterna os contêineres de informação de pagamento
+            if (pagamento === "Cartao") {
+                document.getElementById('box-pagamento-cartao').classList.remove('hidden');
+                document.getElementById('box-pagamento-pix').classList.add('hidden');
+                document.getElementById('succ-email-padrao').innerText = config.email;
+                document.getElementById('succ-valor-cartao').innerText = valorFormatado;
+            } else {
+                document.getElementById('box-pagamento-cartao').classList.add('hidden');
+                document.getElementById('box-pagamento-pix').classList.remove('hidden');
+                document.getElementById('succ-valor-pix').innerText = valorFormatado;
+                document.getElementById('succ-chave-pix').innerText = config.pix;
+            }
+
+            // Limpa formulário
+            document.getElementById('chk-roblox').value = '';
+            document.getElementById('chk-email').value = '';
+            document.getElementById('chk-discord').value = '';
+
+            showToast("Pedido processado com sucesso!");
+            switchView('success');
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = text;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-[-100px]', 'opacity-0'); }, 3000);
+        }
+
+        function openLoginModal() {
+            document.getElementById('dropdownMenu').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function autenticarEquipe(event) {
+            event.preventDefault();
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            if (user === "admin00" && pass === "1357924680") {
+                usuarioLogado = { username: "admin00", role: "admin" };
+                fazerLoginSucesso();
+                return;
+            }
+
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            const vendedorEncontrado = vendedores.find(v => v.user === user && v.pass === pass);
+
+            if (vendedorEncontrado) {
+                usuarioLogado = { username: user, role: "vendedor" };
+                fazerLoginSucesso();
+            } else {
+                alert("❌ Acesso negado! Usuário ou senha incorretos.");
+            }
+        }
+
+        function fazerLoginSucesso() {
+            closeLoginModal();
+            document.getElementById('current-username').innerText = usuarioLogado.username;
+            document.getElementById('admin-master-sections').classList.toggle('hidden', usuarioLogado.role !== 'admin');
+            
+            if(usuarioLogado.role === 'admin') {
+                const config = JSON.parse(localStorage.getItem('iz_config'));
+                document.getElementById('cfg-email').value = config.email;
+                document.getElementById('cfg-pix').value = config.pix;
+                document.getElementById('cfg-taxa').value = config.taxa;
+            }
+
+            renderizarDashboard();
+            switchView('dashboard');
+            showToast(`Bem-vindo, ${usuarioLogado.username}!`);
+        }
+
+        function salvarConfiguracoes(event) {
+            event.preventDefault();
+            const email = document.getElementById('cfg-email').value.trim();
+            const pix = document.getElementById('cfg-pix').value.trim();
+            const taxa = parseFloat(document.getElementById('cfg-taxa').value);
+
+            if (isNaN(taxa) || taxa <= 0) {
+                alert("Insira um valor válido por Robux.");
+                return;
+            }
+
+            localStorage.setItem('iz_config', JSON.stringify({ email, pix, taxa }));
+            carregarConfigLoja();
+            showToast("Configurações atualizadas!");
+        }
+
+        function logout() {
+            usuarioLogado = null;
+            switchView('store');
+            showToast("Sessão finalizada.");
+        }
+
+        function adicionarVendedor(event) {
+            event.preventDefault();
+            const user = document.getElementById('new-vendedor-user').value.trim();
+            const pass = document.getElementById('new-vendedor-pass').value;
+
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            if (user === "admin00" || vendedores.some(v => v.user === user)) {
+                alert("Este nome de usuário já está em uso!");
+                return;
+            }
+
+            vendedores.push({ user, pass });
+            localStorage.setItem('iz_vendedores', JSON.stringify(vendedores));
+            document.getElementById('new-vendedor-user').value = '';
+            document.getElementById('new-vendedor-pass').value = '';
+            renderizarDashboard();
+            showToast("Vendedor cadastrado!");
+        }
+
+        function removerVendedor(user) {
+            let vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            vendedores = vendedores.filter(v => v.user !== user);
+            localStorage.setItem('iz_vendedores', JSON.stringify(vendedores));
+            renderizarDashboard();
+            showToast("Vendedor removido.");
+        }
+
+        function alterarStatusPedido(id, novoStatus) {
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) {
+                pedido.status = novoStatus;
+                localStorage.setItem('iz_orders', JSON.stringify(pedidos));
+                renderizarDashboard();
+                showToast("Status atualizado!");
+            }
+        }
+
+        function apagarPedido(id) {
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const pedido = pedidos.find(p => p.id === id);
+            
+            if (pedido && pedido.status !== "Cancelado") {
+                alert("Para segurança, só é permitido apagar pedidos que estejam marcados como 'Cancelado'.");
+                return;
+            }
+
+            if (confirm("Deseja apagar este pedido definitivamente?")) {
+                const filtrados = pedidos.filter(p => p.id !== id);
+                localStorage.setItem('iz_orders', JSON.stringify(filtrados));
+                renderizarDashboard();
+                showToast("Pedido removido.");
+            }
+        }
+
+        function renderizarDashboard() {
+            const vendedores = JSON.parse(localStorage.getItem('iz_vendedores'));
+            const listContainer = document.getElementById('vendedores-list');
+            listContainer.innerHTML = '';
+            
+            vendedores.forEach(v => {
+                listContainer.innerHTML += `
+                    <span class="inline-flex items-center gap-1.5 bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg text-xs font-semibold text-slate-300">
+                        <i data-lucide="user-cog" class="w-3 h-3 text-amber-400"></i> ${v.user}
+                        <button onclick="removerVendedor('${v.user}')" class="text-rose-400 hover:text-rose-600 font-bold ml-1">×</button>
+                    </span>`;
+            });
+
+            const pedidos = JSON.parse(localStorage.getItem('iz_orders'));
+            const tableBody = document.getElementById('orders-table-body');
+            document.getElementById('orders-count').innerText = `${pedidos.length} Pedidos`;
+            tableBody.innerHTML = '';
+
+            document.getElementById('no-orders-message').classList.toggle('hidden', pedidos.length > 0);
+
+            const statusClasses = {
+                "Não entregue": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+                "Entregue": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                "Respondido": "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                "Cancelado": "bg-rose-500/10 text-rose-400 border-rose-500/20"
+            };
+
+            pedidos.slice().reverse().forEach(p => {
+                const badge = `<span class="px-2.5 py-1 text-xs font-bold rounded-lg border ${statusClasses[p.status || 'Não entregue']}">${p.status || 'Não entregue'}</span>`;
+                const options = ["Não entregue", "Entregue", "Respondido", "Cancelado"].map(opt => 
+                    `<option value="${opt}" ${(p.status || "Não entregue") === opt ? 'selected' : ''}>${opt}</option>`
+                ).join('');
+
+                tableBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/40 transition-colors">
+                        <td class="p-4">
+                            <div class="font-bold text-white">${p.roblox || p.nome || '---'}</div>
+                            <div class="text-xs text-slate-400 max-w-[180px] truncate">${p.email || p.tel || '---'}</div>
+                        </td>
+                        <td class="p-4 text-amber-400 font-mono font-medium">${p.discord || '---'}</td>
+                        <td class="p-4 text-slate-300">${p.produto}</td>
+                        <td class="p-4">
+                            <div class="font-bold text-white">R$ ${p.preco.toFixed(2).replace('.', ',')}</div>
+                            <div class="text-[11px] text-slate-500 font-medium uppercase">${p.pagamento || 'Cartao'}</div>
+                        </td>
+                        <td class="p-4">${badge}</td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-center gap-2">
+                                <select onchange="alterarStatusPedido(${p.id}, this.value)" class="bg-slate-900 border border-slate-700 rounded-lg text-xs px-2 py-1.5 text-slate-300 focus:outline-none">
+                                    ${options}
+                                </select>
+                                <button onclick="apagarPedido(${p.id})" class="p-1.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-400 hover:text-rose-400">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`;
+            });
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
